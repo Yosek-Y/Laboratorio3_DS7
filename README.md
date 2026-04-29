@@ -1,59 +1,176 @@
+# Laboratorio #3 - CRUD Laravel
+**Alumno: Joseph Córdoba | Cédula: 8-1025-2381 | Grupo: 1GS131 | Profesora: Ingeniera Irina Fong**
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descripción
+Este laboratorio tiene como objetivo practicar las bases del CRUD (Create, Read, Update y Delete) en el ambiente de Laravel.  
 
-## About Laravel
+Se documenta el proceso completo de los comandos utilizados para la creacion de la base de datos hasta la ejecución final del sistema.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Realización del Laboratorio
+Como primer paso tenemos la ubicación del proyecto. Abrimos el CMD y lo ejecutamos como administrador y nos posicionamos sobre la siguiente carpeta:
+```bash
+cd C:\xampp\htdocs
+```
+En caso de tener una carpeta especifa donde se ubique el proyecto, debemos hacerlo de esta forma:
+```bash
+cd C:\xampp\htdocs\"Nombre de tu carpeta"
+```
+Luego de posicionarnos en la carpeta indicada corremos el siguiente comando:
+```bash
+laravel new Nombre_Archivo
+```
+Una vez configurado todo el nuevo archivo pasamos a verificar el archivo **.env** este de la siguiente manera:
+```sql
+APP_MAINTENANCE_DRIVER=file
+# APP_MAINTENANCE_STORE=database
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+PHP_CLI_SERVER_WORKERS=4 <-- Importante eliminar el # que precede esta linea
 
-## Learning Laravel
+BCRYPT_ROUNDS=12
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+LOG_CHANNEL=stack
+LOG_STACK=single
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=crud_rapido
+DB_USERNAME=root
+DB_PASSWORD=
+```
+También se verifica que en el archivo **AppServiceProvider.php** ubicado en **app/Providers/AppServiceProvider.php** contengan las siguientes lines de codigo y agregarlas de ser necesario:
+```javascript
+<?php
 
-## Laravel Sponsors
+namespace App\Providers;
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema; <-- Agregar de no tenerla originalmente
 
-### Premium Partners
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Schema::defaultStringLength(191); <-- Agregar de no tenerla originalmente
+    }
+}
+```
+Luego de toda esta verificación es hora de correr uno por uno los siguientes comandos en la terminal de nuestro Visual Studio Code, donde abrimos previamente nuestro nuevo archivo:
+```bash
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
+```
+## Migraciones
+Una vez completado los pasos anteriores ahora ejecutaremos el siguiente comando:
+```bash
+php artisan migrate
+```
+Una vez el sistema nos indica que todo esta correcto, pasamos a la creación de un Modelo junto con su migración:
+```bash
+php artisan make:model Product -m
+```
+Este comando nos genera lo siguiente:
+- Modelo: app/Models/Product.php
+- Migración: create_products_table
 
-## Contributing
+  
+Y posteriormente ejecutamos la Migración:
+```bash
+php artisan migrate
+```
+Todo esto en conjunto nos genera la **Tabla Products.**
+## Instalación del generador CRUD
+Instalamos el paquete generador del CRUD con el siguiente comando:
+```bash
+composer require ibex/crud-generator --dev
+```
+Luego lo configuramos con el siguiente comando:
+```bash
+php artisan vendor:publish --tag=crud
+```
+Y ahora se le genera el CRUD a la tabla Products:
+```bash
+php artisan make:crud products
+```
+Durante la ejecución del comando se selecciona la opción de **Stack: Bootstrap.** Esto genera:
+- Controlador (ProductController)
+- Modelo (sobrescrito)
+- Request (validaciones)
+- Vistas (Blade)
+- Layout base
+## Configuración de rutas
+Se agrega lo que haga falta en el archivo **web.php**, ubicado en: **routes/web.php**, lo siguiente:
+```javascript
+<?php
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ProductController;
 
-## Code of Conduct
+Route::get('/', function () {
+    return view('welcome');
+});
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Auth::routes();
 
-## Security Vulnerabilities
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Route::resource('products', ProductController::class);
+Auth::routes();
 
-## License
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+```
+Así habilitamos las funciones del CRUD:
+- Crear
+- Leer
+- Actualizar
+- Eliminar
+## Ultimos Pasos
+Ya habiendo realizado todo lo anterior, ahora actualizaremos las dependecias con el comando: 
+```bash
+composer dump-autoload
+```
+Instalamos la interfaz de usuario:
+```bash
+composer require laravel/ui --dev
+```
+Y luego creamos la interfaz con Bootstrap:
+```bash
+php artisan ui bootstrap
+php artisan ui bootstrap --auth
+```
+Y finalmente instalamos las dependecias de Node.js:
+```bash
+npm install
+```
+Y levantamos el proyecto:
+```bash
+npm run build
+```
+## Resultados Finales
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Autor
+Nombre: Joseph Córdoba
+Grupo: 1GS131
+Correo: josephcordoba2318@gmail.com
+Correo Institucional: joseph.cordoba@utp.ac.pa
+## Fecha de Ejecución
+Miercoles 28 de Abril de 2026.
