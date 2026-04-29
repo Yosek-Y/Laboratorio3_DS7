@@ -166,11 +166,32 @@ Y levantamos el proyecto:
 npm run build
 ```
 ## Resultados Finales
+<p align="center">
+  <img src="resources/img/Captura de pantalla 2026-04-28 093123.png" width="500">
+</p>
+<p align="center">
+  <img src="resources/img/Captura de pantalla 2026-04-28 093437.png" width="500">
+</p>
+<p align="center">
+  <img src="resources/img/Captura de pantalla 2026-04-28 093445.png" width="500">
+</p>
+<p align="center">
+  <img src="resources/img/Captura de pantalla 2026-04-28 093514.png" width="500">
+</p>
+<p align="center">
+  <img src="resources/img/Captura de pantalla 2026-04-28 093522.png" width="500">
+</p>
+<p align="center">
+  <img src="resources/img/Captura de pantalla 2026-04-28 093529.png" width="500">
+</p>
+<p align="center">
+  <img src="resources/img/Captura de pantalla 2026-04-28 093537.png" width="500">
+</p>
 
 ## Autor
-Nombre: Joseph Córdoba
-Grupo: 1GS131
-Correo: josephcordoba2318@gmail.com
-Correo Institucional: joseph.cordoba@utp.ac.pa
+Nombre: Joseph Córdoba <br>
+Grupo: 1GS131 <br>
+Correo: josephcordoba2318@gmail.com <br>
+Correo Institucional: joseph.cordoba@utp.ac.pa <br>
 ## Fecha de Ejecución
 Miercoles 28 de Abril de 2026.
